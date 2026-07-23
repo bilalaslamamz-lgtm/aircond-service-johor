@@ -160,12 +160,12 @@ nav.main-nav{display:flex;align-items:center;gap:6px;}
 .dropdown-panel a:hover{background:var(--bg-light);color:var(--primary);}
 .dropdown-panel a i{color:var(--primary);width:18px;text-align:center;}
 .header-cta{display:flex;align-items:center;gap:10px;}
-.hamburger{display:none;background:none;border:none;font-size:1.4rem;color:var(--navy);cursor:pointer;}
+.hamburger{display:none;width:44px;height:44px;align-items:center;justify-content:center;background:none;border:none;font-size:1.4rem;color:var(--navy);cursor:pointer;flex-shrink:0;}
 .mobile-panel{display:none;}
 
 @media(max-width:960px){
-  .main-nav{display:none;}
-  .hamburger{display:block;}
+  nav.main-nav{display:none;}
+  .hamburger{display:flex;}
   .header-cta .btn span.label{display:none;}
   .mobile-panel.open{
     display:block;background:#fff;border-top:1px solid rgba(6,43,99,0.08);
