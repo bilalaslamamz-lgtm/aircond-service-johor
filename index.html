@@ -135,7 +135,7 @@ header.scrolled{box-shadow:0 8px 30px -18px rgba(6,43,99,0.3);}
 }
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:800;font-size:1.25rem;color:var(--navy);}
 .logo .logo-badge{
-  width:38px;height:38px;border-radius:11px;
+  width:38px;height:38px;border-radius:11px;flex-shrink:0;overflow:hidden;
   background:linear-gradient(135deg,var(--cyan),var(--primary));
   display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.05rem;
 }
@@ -435,7 +435,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.8);padding:64px 0 26px;}
 <header id="siteHeader">
   <div class="nav-wrap">
     <a href="#home" class="logo">
-      <span class="logo-badge"><i class="fa-solid fa-snowflake"></i></span>
+      <span class="logo-badge"><img src="logo.png" alt="Aircon Master logo" style="width:100%;height:100%;object-fit:contain;border-radius:11px;"></span>
       Aircon Master
     </a>
     <nav class="main-nav">
@@ -682,7 +682,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.8);padding:64px 0 26px;}
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="logo" style="color:#fff;"><span class="logo-badge"><i class="fa-solid fa-snowflake"></i></span>Aircon Master</div>
+        <div class="logo" style="color:#fff;"><span class="logo-badge"><img src="logo.png" alt="Aircon Master logo" style="width:100%;height:100%;object-fit:contain;border-radius:11px;"></span>Aircon Master</div>
         <p>Aircon &amp; Electric Solutions providing professional aircon installation, chemical cleaning, repair and maintenance across Johor Bahru.</p>
         <a class="btn btn-primary wa-link" data-msg="Hi, I would like to enquire about your aircon service in Johor Bahru." href="#"><i class="fa-brands fa-whatsapp"></i> +60 18-267 3123</a>
       </div>
@@ -749,7 +749,7 @@ const SERVICES = [
   },
   {
     id:"chemical-cleaning",
-    title:"Aircon Chemical Washing",
+    title:"Aircon Chemical Cleaning",
     shortDesc:"Deep chemical wash of the coil and blower to restore airflow and remove dust, mold and odour.",
     icon:"fa-solid fa-spray-can-sparkles",
     image:"Chemical Aircon Cleaning.jpeg",
@@ -902,6 +902,11 @@ const PRICING = [
   {title:"Dismantle, Service & Install", price:"RM 319", note:"From, per unit", id:"dismantle-service-install", perk:"Free 6ft copper pipe, 6ft wiring, 10ft drain pipe, 25 psi gas top-up"}
 ];
 
+function shortPrice(priceFrom){
+  const m = priceFrom.match(/RM\s?[\d,]+(\.\d+)?(\s?\/\s?unit)?/i);
+  return m ? m[0].replace(/\s+/g," ").trim() : "Quote";
+}
+
 function waLink(msg){
   return "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg);
 }
@@ -918,9 +923,10 @@ function buildNav(){
   const mobileServices = document.getElementById("mobileServices");
   const footerServices = document.getElementById("footerServices");
   SERVICES.forEach(function(s){
-    dd.insertAdjacentHTML("beforeend", '<a href="#service/'+s.id+'"><i class="'+s.icon+'"></i>'+s.title+'</a>');
-    mobileServices.insertAdjacentHTML("beforeend", '<a href="#service/'+s.id+'"><i class="'+s.icon+'"></i>'+s.title+'</a>');
-    footerServices.insertAdjacentHTML("beforeend", '<li><a href="#service/'+s.id+'">'+s.title+'</a></li>');
+    const label = s.title + " / " + shortPrice(s.priceFrom);
+    dd.insertAdjacentHTML("beforeend", '<a href="#service/'+s.id+'"><i class="'+s.icon+'"></i>'+label+'</a>');
+    mobileServices.insertAdjacentHTML("beforeend", '<a href="#service/'+s.id+'"><i class="'+s.icon+'"></i>'+label+'</a>');
+    footerServices.insertAdjacentHTML("beforeend", '<li><a href="#service/'+s.id+'">'+label+'</a></li>');
   });
 }
 
@@ -931,7 +937,7 @@ function buildServiceCards(){
     grid.insertAdjacentHTML("beforeend",
       '<div class="service-card">' +
         '<div class="thumb"><img src="'+s.image+'" alt="'+s.title+' by Aircon Master in Johor Bahru"><span class="icon-badge"><i class="'+s.icon+'"></i></span></div>' +
-        '<div class="body"><h3>'+s.title+'</h3><p>'+s.shortDesc+'</p>' +
+        '<div class="body"><h3>'+s.title+' <span style="color:var(--primary);font-weight:700;">/ '+shortPrice(s.priceFrom)+'</span></h3><p>'+s.shortDesc+'</p>' +
         '<a class="learn-more" href="#service/'+s.id+'">Learn More <i class="fa-solid fa-arrow-right"></i></a></div>' +
       '</div>'
     );
